@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rock Paper Scissors game</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <audio id="draw" src="mp3_426807.mp3" ></audio>
+  <audio id="win" src="Win sound.wav"></audio>
+  <audio id="lose" src="zapsplat_multimedia_game_die_lose_life_24882.mp3"></audio>
+  <header>
+    <h1>Rock Paper Scissors </h1>
+  </header>
+  <div class="score-board">
+    <div id="user-label" class="badge">user</div>
+    <div id="computer-label" class="badge">comp</div>
+    <span id="user-score">0</span>:<span id="computer-score">0</span>
+  </div>
+  <div class="result">
+    <p>Paper covers rock. You win!</p>
+  </div>
+  <div class="choices">
+    <div id="r" class="choice">
+      <img src="https://i.ibb.co/K9whpr9/IMG-20200523-161945-051.jpg" alt="IMG-20200523-161945-051" border="0" height="120px" width="auto">
+    </div>
+    <div id="p" class="choice">
+      <img src="https://i.ibb.co/7Yg3srC/IMG-20200523-161929-949.jpg" alt="IMG-20200523-161929-949" border="0" height="120px" width="auto">
+    </div>
+    <div id="s" class="choice">
+      <img src="https://i.ibb.co/8BtLPWL/IMG-20200523-161919-632.jpg" alt="IMG-20200523-161919-632" border="0" height="120px" width="auto">
+    </div>
+  </div>
+  <p id="action-message">Make your move</p>
+  <script>
+    let userScore = 0;
+    let computerScore = 0;
+    const userScore_span = document.getElementById("user-score");
+    const computerScore_span = document.getElementById("computer-score");
+    const scoreBoard_div = document.querySelector(".scoreboard");
+    const result_p = document.querySelector(".result > p");
+    const rock_div = document.getElementById("r");
+    const paper_div = document.getElementById("p");
+    const scissors_div = document.getElementById("s");
+    function getComputerChoice(){
+    const choice = ['r','p','s'];
+    const randomNumber = Math.floor(Math.random() *3);
+    return choice[randomNumber];
+    }
+    function convertToWord(letter){
+    if (letter === "r") return "Rock";
+    if (letter === "p") return " Paper";
+    return "Scissors";
+    }
+    function win(userChoice, computerChoice){
+    userScore++;
+   
+    document.getElementById("win").play()
+
+    userScore_span.innerHTML = userScore;
+    computerScore_span.innerHTML = computerScore;
+    const smallUserWord = "user".fontsize(3).sub();
+    const smallCompWord = "comp".fontsize(3).sub();
+    const userChoice_div = document.getElementById(userChoice);
+    result_p.innerHTML = `${convertToWord(userChoice)} ${smallUserWord} beats ${convertToWord(computerChoice)} ${smallCompWord} .You Win!`
+    userChoice_div.classList.add(`green-glow`);
+    setTimeout(function() {userChoice_div.classList.remove(`green-glow`) }, 300);
+    }
+    function lose(userChoice, computerChoice) {
+    computerScore++;
+    document.getElementById("lose").play()
+    userScore_span.innerHTML = userScore;
+    computerScore_span.innerHTML = computerScore;
+    const smallUserWord = "user".fontsize(3).sub();
+    const smallCompWord = "comp".fontsize(3).sub();
+    const userChoice_div = document.getElementById(userChoice);
+    result_p.innerHTML = `${convertToWord(userChoice)} ${smallUserWord} lose to ${convertToWord(computerChoice)} ${smallCompWord} .You Lost `
+    userChoice_div.classList.add(`red-glow`);
+    setTimeout(function(){userChoice_div.classList.remove(`red-glow`)}, 300)
+    }
+    function draw(userChoice, computerChoice) {
+      document.getElementById("draw").play()
+    const smallUserWord = "user".fontsize(3).sub();
+    const smallCompWord = "comp".fontsize(3).sub();
+    const userChoice_div = document.getElementById(userChoice);
+    result_p.innerHTML = `${convertToWord(userChoice)} ${smallUserWord} equals ${convertToWord(computerChoice)} ${smallCompWord} . It's a draw `
+    userChoice_div.classList.add(`gray-glow`)
+    setTimeout(function(){userChoice_div.classList.remove(`gray-glow`)})
+    }
+    function game(userChoice) {
+    const computerChoice = getComputerChoice();
+    switch(userChoice + computerChoice){
+    case "rs":
+    case "pr":
+    case "sp":
+    win(userChoice, computerChoice);
+    break;
+    case "sr":
+    case "rp":
+    case "ps":
+    lose(userChoice, computerChoice);
+    break;
+    case "rr":
+    case "ss":
+    case "pp":
+    draw(userChoice, computerChoice);
+    break;
+    }
+    }
+    function main(){
+    rock_div.addEventListener('click', function(){
+    game("r");
+    })
+    paper_div.addEventListener('click', function() {
+    game("p");
+    })
+    scissors_div.addEventListener('click', function() {
+    game("s");
+    })
+    }
+    main();
+  </script>
+    </body>
+
+   
+    </html>
